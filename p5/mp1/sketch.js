@@ -12,12 +12,7 @@ function setup(){
     if (mouseIsPressed) {
       //This is for the pressed code
       //snowman
-
-
-
       fill('black');
-
-
 
       background('red');
             fill(255);
