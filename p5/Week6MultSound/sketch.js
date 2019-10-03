@@ -48,7 +48,7 @@
               myState = 2;
 
 
-              myState = 3;
+
               break;
             case 2:
               song3.play();
@@ -56,7 +56,7 @@
               myState = 3;
               myBColor = color(random(255), random(255), random(255));
 
-              myState = 4;
+
               break;
             case 3:
               song4.play();
@@ -65,7 +65,7 @@
               myBColor = color(random(255), random(255), random(255));
 
 
-              myState = 5;
+
               break;
 
             case 4:
@@ -93,4 +93,9 @@
           if (myState > 5) {
             myState = 0;
           }
+        }
+
+
+        function touchStarted() {
+          getAudioContext().resume();
         }
