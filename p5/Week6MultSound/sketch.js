@@ -38,7 +38,7 @@
               break;
 
             case 1:
-            background(0, 255, 0);
+              background(0, 255, 0);
               fill('orange');
               textSize(20);
               text('So youre still thinkin bout me, just like I know you should. I can not give you everything you know I wish I could.', 50, 50);
@@ -51,7 +51,7 @@
 
             case 3:
               background(255, 0, 0);
-                fill('blue');
+              fill('blue');
               textSize(20);
               text('Thats why I love it, I love it, love it I love it, love it I love it. Thats why I love it, I love it, love it I love it, love it I love it.', 50, 50);
               break;
@@ -63,7 +63,7 @@
 
             case 5:
               background(0, 255, 0);
-                fill('red');
+              fill('red');
               textSize(20);
               text('I was left to my own devices, many days fell away with nothing to show', 50, 50);
               break;
@@ -75,7 +75,7 @@
 
             case 7:
               fill('gold');
-              background(0, 255, 0);
+              background(0, 0, 180);
               textSize(20);
               text('Haha, I get it down on the dance floor watch this, hey you dont even know girl come here', 50, 50);
               break;
@@ -87,7 +87,7 @@
 
             case 9:
               background(0, 0, 255);
-                fill('purple');
+              fill('purple');
               textSize(20);
               text('Pour up, drank, head shot, drank sit down, drank, stand up, drank pass out, drank, wake up, drank faded, drank, faded, drank', 50, 50);
               break;
