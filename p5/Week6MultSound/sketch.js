@@ -65,7 +65,7 @@
               background(0, 255, 0);
               fill('red');
               textSize(20);
-              text('I was left to my own devices, many days fell away with nothing to show', 50, 50);
+              text('All it takes is one flight, we be in the same time zone, scrollin down ya timeline, seein all the changes I', 50, 50);
               break;
 
             case 6:
