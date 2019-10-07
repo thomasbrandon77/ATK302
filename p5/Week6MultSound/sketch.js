@@ -5,7 +5,7 @@
         function preload() {
           song1 = loadSound('assets/YDBKhalid.mp3');
           song2 = loadSound('assets/HeavenOnlyKnows.mp3');
-          song3 = loadSound('assets/TimefliesPompeii.mp3');
+          song3 = loadSound('assets/LostInJapan.m4a');
           song4 = loadSound('assets/FreezeTPain.mp3');
           song5 = loadSound('assets/SwimmingPools.mp3');
 
