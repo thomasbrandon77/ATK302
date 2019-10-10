@@ -6,6 +6,8 @@ var frogPos;
     for (var i = 0; i < 40; i++) {
     cars.push(new Car()) ;
       frogPos = createVector(width / 2, height - 80);
+      rectMode(CENTER);
+      ellipseMode(CENTER);
     }
   }
 
@@ -50,7 +52,7 @@ var frogPos;
       if (this.pos.x < 0) this.pos.x = width;
       if (this.pos.x > width) this.pos.y = 0;
       if (this.pos.y < 0) this.pos.y = height;
-      
+
     }
 
   }
