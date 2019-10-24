@@ -16,13 +16,14 @@ function setup() {
   fish = loadImage("assets/fish.jpg");
   bearLeft = loadImage("assets/bearLeft.jpg") ;
   bearRight = loadImage("assets/bearRight.jpg");
-
-
-
+  bearandfish = loadImage("assets/bearandfish.jpg");
+  sadbear = loadImage("assets/sadbear.png");
+  happybear = loadImage("assets/happybear.jpg");
   bearPos = createVector(width / 2, height /2 );
   rectMode(CENTER);
   ellipseMode(CENTER);
   imageMode(CENTER);
+
 }
 
 function draw() {
@@ -31,12 +32,16 @@ function draw() {
 
     case 0: // splash screen
       background('green');
-      textSize(60);
+      // textSize(60);
+      // text('WELCOME TO \n THE GAME', 100, 100);
+      image(bearandfish, width/2, height/2);
+      fill('teal');
+      textSize(70);
       text('WELCOME TO \n THE GAME', 100, 100);
       break;
 
     case 1: // the game state
-      background('green');
+      background('lightblue');
       game();
       timer++;
       if (timer > 600) {
@@ -47,17 +52,21 @@ function draw() {
       break;
 
     case 2: // the win state
-      background('green');
+      background('lightblue');
+      image(happybear, width/2, height/2);
       fill('purple', 100, 100);
-      textSize(60);
-      text('YOU WON!', 100, 100);
+      textSize(65);
+      text('YOU WON!', 275, 70);
+
       break;
 
     case 3: // the lose state
       background(255, 20, 71);
-      fill('blue');
-      textSize(60);
-      text('YOU DONE!', 100, 100);
+      fill('red');
+      image(sadbear, width/2, height/2);
+      textSize(70);
+      text('YOU DONE!', 200, 150);
+
       break;
 
   }
