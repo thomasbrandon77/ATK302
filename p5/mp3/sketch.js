@@ -37,7 +37,7 @@ function draw() {
       image(bearandfish, width/2, height/2);
       fill('teal');
       textSize(70);
-      text('WELCOME TO THE \n BEAR GAMES!', 150, 100);
+      text('WELCOME! \nEAT ALL THE FISH!', 100, 100);
 
       break;
 
@@ -148,7 +148,7 @@ function checkForKeys() {
 }
 
 function resetTheGame() {
-  car = [];
+  cars = [];
   for (var i = 0; i < 10; i++) {
     cars.push(new Car());
   }
