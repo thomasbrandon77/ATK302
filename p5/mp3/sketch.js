@@ -2,9 +2,9 @@ var cars = [];
 var bearPos;
 var myState = 0;
 var timer = 0;
-var bearRight, bearLeft ;
+var bearRight, bearLeft;
 var fish;
-
+var song1;
 function setup() {
 
   createCanvas(800, 800);
@@ -13,13 +13,15 @@ function setup() {
   for (var i = 0; i < 5; i++) {
     cars.push(new Car());
   }
-  fish = loadImage("assets/fish.jpg");
-  bearLeft = loadImage("assets/bearLeft.jpg") ;
-  bearRight = loadImage("assets/bearRight.jpg");
-  bearandfish = loadImage("assets/bearandfish.jpg");
+  song1 = loadSound('assets/closeUp.mp3');
+  fish = loadImage("assets/fish.png");
+  bearLeft = loadImage("assets/bearLeft.png");
+  bearRight = loadImage("assets/bearRight.png");
+  bear = loadImage("assets/bear.png");
   sadbear = loadImage("assets/sadbear.png");
-  happybear = loadImage("assets/happybear.jpg");
-  bearPos = createVector(width / 2, height /2 );
+  happybear = loadImage("assets/happyBear.jpg");
+
+  bearPos = createVector(width / 2, height / 2);
   rectMode(CENTER);
   ellipseMode(CENTER);
   imageMode(CENTER);
@@ -31,13 +33,13 @@ function draw() {
   switch (myState) {
 
     case 0: // splash screen
-      background('green');
+      background('lightblue');
       // textSize(60);
       // text('WELCOME TO \n THE GAME', 100, 100);
-      image(bearandfish, width/2, height/2);
+      image(bear, width / 2, 500);
       fill('teal');
       textSize(70);
-      text('WELCOME! \nEAT ALL THE FISH!', 100, 100);
+      text('WELCOME! \nEAT ALL THE FISH!', 100, 80);
 
       break;
 
@@ -54,7 +56,7 @@ function draw() {
 
     case 2: // the win state
       background('lightblue');
-      image(happybear, width/2, height/2);
+      image(happybear, width / 2, height / 2);
       fill('purple', 100, 100);
       textSize(65);
       text('YOU WON!', 275, 70);
@@ -64,7 +66,7 @@ function draw() {
     case 3: // the lose state
       background(255, 20, 71);
       fill('black');
-      image(sadbear, width/2, height/2);
+      image(sadbear, width / 2, height / 2);
       textSize(70);
       text('YOU DONE!', 200, 150);
 
@@ -78,16 +80,23 @@ function mouseReleased() {
   switch (myState) {
     case 0: //splash screen
       myState = 1;
+      song1.play();
+      break;
+
+      case 1:
+      song1.play();
       break;
 
     case 2: // the win state!
       resetTheGame();
       myState = 0;
+      song1.stop();
       break;
 
     case 3: // the lose state!
       resetTheGame();
       myState = 0;
+      song1.stop();
       break;
 
   }
@@ -110,15 +119,15 @@ function Car() {
     image(fish, this.pos.x, this.pos.y, 100, 100);
 
 
-  this.timer++;
-  if(this.timer > 20){
-    this.fishNum = this.fishNum + 1;
-    this.timer = 0;
-  }
+    this.timer++;
+    if (this.timer > 20) {
+      this.fishNum = this.fishNum + 1;
+      this.timer = 0;
+    }
 
 
-  if (this.fishNum > fish.length - 1) //could also put > 2
-    this.fishNum = 0;
+    if (this.fishNum > fish.length - 1) //could also put > 2
+      this.fishNum = 0;
   }
 
   this.drive = function() {
@@ -134,8 +143,8 @@ function Car() {
 }
 
 function keyPressed() {
-  if (keyCode === LEFT_ARROW) bear = bearLeft ;
-  if (keyCode === RIGHT_ARROW) bear = bearRight ;
+  if (keyCode === LEFT_ARROW) bear = bearLeft;
+  if (keyCode === RIGHT_ARROW) bear = bearRight;
 
 }
 
@@ -157,7 +166,7 @@ function resetTheGame() {
 }
 
 function game() {
-    background('lightblue');
+  background('lightblue');
   for (var i = 0; i < cars.length; i++) {
     cars[i].display();
     cars[i].drive();
@@ -167,7 +176,6 @@ function game() {
   }
   if (cars.length == 0) {
     myState = 2;
-    bearPos = 0;
   }
 
   // draw the bear
