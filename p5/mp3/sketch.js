@@ -37,7 +37,8 @@ function draw() {
       image(bearandfish, width/2, height/2);
       fill('teal');
       textSize(70);
-      text('WELCOME TO \n THE GAME', 100, 100);
+      text('WELCOME TO THE \n BEAR GAMES!', 150, 100);
+
       break;
 
     case 1: // the game state
@@ -62,7 +63,7 @@ function draw() {
 
     case 3: // the lose state
       background(255, 20, 71);
-      fill('red');
+      fill('black');
       image(sadbear, width/2, height/2);
       textSize(70);
       text('YOU DONE!', 200, 150);
