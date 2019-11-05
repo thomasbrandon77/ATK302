@@ -13,7 +13,7 @@ function setup() {
   for (var i = 0; i < 5; i++) {
     cars.push(new Car());
   }
-  
+
 
   song1 = loadSound('assets/closeUp.mp3');
   fish = loadImage("assets/fish.png");
