@@ -1,67 +1,118 @@
-var cars = [];
-var frogPos;
+//asteroid clone (core mechanics only)
+//arrow keys to move + x to shoot
 
-  function setup() {
-    createCanvas(800, 800);
-    for (var i = 0; i < 40; i++) {
-    cars.push(new Car()) ;
-      frogPos = createVector(width / 2, height - 80);
-      rectMode(CENTER);
-      ellipseMode(CENTER);
-    }
+var bullets;
+var asteroids;
+var ship;
+var shipImage, bulletImage, particleImage;
+var MARGIN = 40;
+
+function setup() {
+  createCanvas(800, 600);
+
+  bulletImage = loadImage('assets/bird1.png');
+  shipImage = loadImage('assets/yodaleft.gif');
+  particleImage = loadImage('assets/bird3.png');
+
+  ship = createSprite(width/2, height/2);
+  ship.maxSpeed = 6;
+  ship.friction = 0.98;
+  ship.setCollider('circle', 0, 0, 20);
+
+  ship.addImage('normal', shipImage);
+  ship.addAnimation('thrust', 'assets/yodaleft.png', 'assets/bird3.png');
+
+  asteroids = new Group();
+  bullets = new Group();
+
+  for(var i = 0; i<8; i++) {
+    var ang = random(360);
+    var px = width/2 + 1000 * cos(radians(ang));
+    var py = height/2+ 1000 * sin(radians(ang));
+    createAsteroid(3, px, py);
+  }
+}
+
+function draw() {
+  background(0);
+
+  fill(255);
+  textAlign(CENTER);
+  text('Controls: Arrow Keys + X', width/2, 20);
+
+  for(var i=0; i<allSprites.length; i++) {
+    var s = allSprites[i];
+    if(s.position.x<-MARGIN) s.position.x = width+MARGIN;
+    if(s.position.x>width+MARGIN) s.position.x = -MARGIN;
+    if(s.position.y<-MARGIN) s.position.y = height+MARGIN;
+    if(s.position.y>height+MARGIN) s.position.y = -MARGIN;
   }
 
-  function draw() {
-    background(100);
-    for (var i = 0; i < cars.length; i++) {
-    cars[i].display();
-    cars[i].drive();
-    if (cars[i].pos.dist(frogPos) < 50) {
-      cars.splice(i, 1)
+  asteroids.overlap(bullets, asteroidHit);
 
-    }
+  ship.bounce(asteroids);
 
+  if(keyDown(LEFT_ARROW))
+    ship.rotation -= 4;
+  if(keyDown(RIGHT_ARROW))
+    ship.rotation += 4;
+  if(keyDown(UP_ARROW))
+  {
+    ship.addSpeed(0.2, ship.rotation);
+    ship.changeAnimation('thrust');
+  }
+  else
+    ship.changeAnimation('normal');
+
+  if(keyWentDown('x'))
+  {
+    var bullet = createSprite(ship.position.x, ship.position.y);
+    bullet.addImage(bulletImage);
+    bullet.setSpeed(10+ship.getSpeed(), ship.rotation);
+    bullet.life = 30;
+    bullets.add(bullet);
   }
 
+  drawSprites();
 
-  // draw the frog
-  fill('green');
-  ellipse(frogPos.x, frogPos.y, 60, 60);
-  checkForKeys();
+}
+
+function createAsteroid(type, x, y) {
+  var a = createSprite(x, y);
+  var img = loadImage('assets/asteroid'+floor(random(0, 3))+'.png');
+  a.addImage(img);
+  a.setSpeed(2.5-(type/2), random(360));
+  a.rotationSpeed = 0.5;
+  //a.debug = true;
+  a.type = type;
+
+  if(type == 2)
+    a.scale = 0.6;
+  if(type == 1)
+    a.scale = 0.3;
+
+  a.mass = 2+a.scale;
+  a.setCollider('circle', 0, 0, 50);
+  asteroids.add(a);
+  return a;
+}
+
+function asteroidHit(asteroid, bullet) {
+  var newType = asteroid.type-1;
+
+  if(newType>0) {
+    createAsteroid(newType, asteroid.position.x, asteroid.position.y);
+    createAsteroid(newType, asteroid.position.x, asteroid.position.y);
   }
 
-
-  function Car() {
-    // attributes
-    this.pos = createVector(random(100), 100);
-    this.vel = createVector(random(-15, 10), random(-10, 20));
-    this.r = random(255);
-    this.g = random(255);
-    this.b = random(255);
-    // methods
-    this.display = function() {
-      fill(this.r, this.g, this.b);
-      rect(this.pos.x, this.pos.y, 100, 50);
-    }
-
-
-
-    this.drive = function() {
-      this.pos.add(this.vel);
-      if (this.pos.x > width) this.pos.x = 0;
-      if (this.pos.x < 0) this.pos.x = width;
-      if (this.pos.x > width) this.pos.y = 0;
-      if (this.pos.y < 0) this.pos.y = height;
-
-    }
-
+  for(var i=0; i<10; i++) {
+    var p = createSprite(bullet.position.x, bullet.position.y);
+    p.addImage(particleImage);
+    p.setSpeed(random(3, 5), random(360));
+    p.friction = 0.95;
+    p.life = 15;
   }
 
-  function checkForKeys () {
-    if (keyIsDown(LEFT_ARROW)) frogPos.x = frogPos.x - 20;
-    if (keyIsDown(RIGHT_ARROW)) frogPos.x = frogPos.x + 20;
-    if (keyIsDown(UP_ARROW)) frogPos.y = frogPos.y - 20;
-    if (keyIsDown(DOWN_ARROW)) frogPos.y = frogPos.y + 20;
-
-
-  }
+  bullet.remove();
+  asteroid.remove();
+}

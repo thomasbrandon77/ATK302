@@ -1,4 +1,3 @@
-
 var weather;
 var temp = 0;
 var weatherID = 0; // returned in the JSON weather element
@@ -6,6 +5,7 @@ var myState = 0;
 var x = 0;
 var ws = 0;
 var temperature = 0;
+
 function setup() {
   createCanvas(400, 400);
 
@@ -31,27 +31,27 @@ function draw() {
   switch (myState) {
     case 0:
       if (weather) {
-          myState = 1;
+        myState = 1;
       }
       break;
 
     case 1:
-    background(200) ;
-    fill('black');
-    text("we have weather", 20, 20) ;
-// parse the weather object and put some text for some at least 3 different weather data!
-  text("The temperature is " + weather.main.temp, 20, 40);
-  text("The humidity is " + weather.main.humidity, 40, 60);
-  text("The wind speed is " + weather.wind.speed, 20, 80);
+      background(200);
+      fill('black');
+      text("we have weather", 20, 20);
+      // parse the weather object and put some text for some at least 3 different weather data!
+      text("The temperature is " + weather.main.temp, 20, 40);
+      text("The humidity is " + weather.main.humidity, 40, 60);
+      text("The wind speed is " + weather.wind.speed, 20, 80);
 
       fill('white');
       noStroke();
       ellipse(x, 250, 200, 100);
-      x = x + ws/2;
+      x = x + ws / 2;
       if (x > width) x = 0;
 
       fill('red');
-      rect(width-40, height-10, 30, -temperature );
+      rect(width - 40, height - 10, 30, -temperature);
 
       break;
 
