@@ -1,118 +1,417 @@
-//asteroid clone (core mechanics only)
-//arrow keys to move + x to shoot
+// Landscape Example
+// Coding for Artists - 2019
+// Instructor: Urban Reininger
+var myState = 0;
+var tree1, tree2; //Chris
+var sign1, meme; //Chris
+var retroracer; //Chris
+var song1; //Chris
+var daysunpos = 200;
+var nightsunpos = 200;
+var cars = [];
+var timer = 0;
+var carPos;
+var loading;
+var count = 0;
+var fuckedup = 0;
+var leftwall = 450;
+var rightwall = 1180;
+var enemy ;
+var arrow ;
 
-var bullets;
-var asteroids;
-var ship;
-var shipImage, bulletImage, particleImage;
-var MARGIN = 40;
+function preload() {
+  song1 = loadSound("assets/lazerhawk.mp3"); //Chris song1
+
+}
 
 function setup() {
-  createCanvas(800, 600);
 
-  bulletImage = loadImage('assets/bird1.png');
-  shipImage = loadImage('assets/yodaleft.gif');
-  particleImage = loadImage('assets/bird3.png');
 
-  ship = createSprite(width/2, height/2);
-  ship.maxSpeed = 6;
-  ship.friction = 0.98;
-  ship.setCollider('circle', 0, 0, 20);
+  tree1 = loadImage("assets/treereal.png");
+  tree2 = loadImage("assets/treesmall.png");
+  sign1 = loadImage("assets/chasesign1.png");
+  enemy = loadImage("assets/coin.png");
+  retroracer = loadImage("assets/retroracer.png");
+  loading = loadImage("assets/startscreen2.png");
+  arrow = loadImage("assets/arrow1.png");
 
-  ship.addImage('normal', shipImage);
-  ship.addAnimation('thrust', 'assets/yodaleft.png', 'assets/bird3.png');
+  imageMode(CENTER);
 
-  asteroids = new Group();
-  bullets = new Group();
 
-  for(var i = 0; i<8; i++) {
-    var ang = random(360);
-    var px = width/2 + 1000 * cos(radians(ang));
-    var py = height/2+ 1000 * sin(radians(ang));
-    createAsteroid(3, px, py);
-  }
-}
+  createCanvas(windowWidth, windowHeight);
+
+  // for (var i = 0; i < 5; i++) {
+  //
+  //   cars.push(new Car());
+  //
+  // }
+
+
+
+  carPos = createVector(820, 700);
+
+
+
+
+} // end setup
+
 
 function draw() {
-  background(0);
 
+
+
+  switch (myState) {
+    case 0:
+
+      image(loading, width / 2, height / 2, windowWidth, windowHeight);
+
+      break;
+
+    case 1:
+
+          timer++;
+          if (timer > 200) {
+
+            myState = 2;
+            timer = 0
+          }
+
+      push();
+
+      nighttime();
+
+      pop();
+
+      timer++;
+      if (timer > 100) {
+        cars.push(new Car());
+        timer = 0;
+      }
+
+        var rev = cars.reverse() ;
+      for (var i = 0; i < cars.length; i++) { // Chris DRIVE
+
+
+        rev[i].display();
+        rev[i].drive();
+
+        // if (rev[i].pos.y > height) {
+        //     rev.splice(i, 1);
+        // }
+        if ((rev[i].pos.dist(carPos) < 60) && (rev[i].object == 2)) {
+          rev.splice(i, 1);
+
+          if (count > 8) {
+            myState = 2 ;
+          }
+          count++;
+
+
+
+
+        }
+
+        // if ((cars[i].pos.dist(carPos) < 50) && (cars[i].object == 0)) {
+        //   cars.splice(i, 1) ;
+        //   fuckedup++;
+        // }
+
+      }
+      image(retroracer, carPos.x, carPos.y, 150 * carPos.y / 600, 100 * carPos.y / 560);
+      checkForKeys();
+      // textSize(10) ;
+      fill(255);
+      // text(mouseX + ',' + mouseY, 20, 20);
+      textSize(25);
+      text("Coins Collected: " + count, 1400, 50) ;
+      // text("YOU FUCKED UP: " + fuckedup, 20, 40) ;
+
+      image(arrow, 900, 250, 60, 60) ;
+      textSize(40);
+      text("Collect Coins!", 930, 225) ;
+      break;
+
+    case 2:
+
+      push() ;
+      daylight();
+      pop() ;
+
+
+
+            timer++;
+            if (timer > 100) {
+              cars.push(new Car());
+              timer = 0;
+            }
+
+              var rev = cars.reverse() ;
+            for (var i = 0; i < cars.length; i++) { // Chris DRIVE
+
+
+              rev[i].display();
+              rev[i].drive();
+
+              // if (rev[i].pos.y > height) {
+              //     rev.splice(i, 1);
+              // }
+              if ((rev[i].pos.dist(carPos) < 40) && (rev[i].object == 2)) {
+                rev.splice(i, 1);
+
+                if (count > 18) {
+                  myState = 3 ;
+              }
+                count++;
+
+
+
+
+              }
+
+              // if ((cars[i].pos.dist(carPos) < 50) && (cars[i].object == 0)) {
+              //   cars.splice(i, 1) ;
+              //   fuckedup++;
+              // }
+
+            }
+            image(retroracer, carPos.x, carPos.y, 150 * carPos.y / 600, 100 * carPos.y / 560);
+            checkForKeys();
+            // textSize(10) ;
+            fill(255);
+
+            // text(mouseX + ',' + mouseY, 20, 20);
+            textSize(25);
+            text("Coins Collected: " + count, 1400, 50) ;
+            // text("YOU FUCKED UP: " + fuckedup, 20, 40) ;
+            image(arrow, 900, 250, 60, 60) ;
+            timer++;
+
+            textSize(40);
+            text("Collect Coins!", 930, 225) ;
+
+      break;
+
+      case 3:
+
+      push() ;
+      daylight();
+      pop() ;
+
+
+
+            timer++;
+            if (timer > 10) {
+              cars.push(new Car());
+              timer = 0;
+            }
+
+              var rev = cars.reverse() ;
+            for (var i = 0; i < cars.length; i++) { // Chris DRIVE
+
+
+              rev[i].display();
+              rev[i].drive();
+
+              // if (rev[i].pos.y > height) {
+              //     rev.splice(i, 1);
+              // }
+              if ((rev[i].pos.dist(carPos) < 40) && (rev[i].object == 2)) {
+                rev.splice(i, 1);
+
+              //   if (count > 18) {
+              //     myState = 1 ;
+              // }
+                count++;
+
+
+
+
+              }
+
+              // if ((cars[i].pos.dist(carPos) < 50) && (cars[i].object == 0)) {
+              //   cars.splice(i, 1) ;
+              //   fuckedup++;
+              // }
+
+            }
+            image(retroracer, carPos.x, carPos.y, 150 * carPos.y / 600, 100 * carPos.y / 560);
+            checkForKeys();
+            // textSize(10) ;
+            fill(255);
+
+            // text(mouseX + ',' + mouseY, 20, 20);
+            textSize(25);
+            text("Coins Collected: " + count, 1400, 50) ;
+            // text("YOU FUCKED UP: " + fuckedup, 20, 40) ;
+            image(arrow, 900, 250, 60, 60) ;
+            timer++;
+            if (timer > 3100) {
+
+              myState = 1;
+              timer = 0
+            }
+            textSize(40);
+            text("Collect Coins!", 930, 225) ;
+
+      break;
+
+
+  }
+}
+
+
+
+function mouseReleased() {
+  switch (myState) {
+    case 0:
+      song1.play();
+      myState = 1;
+      break;
+
+    case 1:
+
+
+      myState = 2;
+      break;
+
+    case 2:
+
+      myState = 1;
+      break;
+
+      myState++;
+      daysunpos = 200;
+      nightsunpos = 200;
+      if (myState > 2) myState = 0;
+
+
+
+  }
+
+
+
+}
+
+function mouseLocation() {
   fill(255);
-  textAlign(CENTER);
-  text('Controls: Arrow Keys + X', width/2, 20);
+  text(("x: " + mouseX), 20, 10);
+  text(("y: " + mouseY), 20, 20);
+} // end mouseLocation
 
-  for(var i=0; i<allSprites.length; i++) {
-    var s = allSprites[i];
-    if(s.position.x<-MARGIN) s.position.x = width+MARGIN;
-    if(s.position.x>width+MARGIN) s.position.x = -MARGIN;
-    if(s.position.y<-MARGIN) s.position.y = height+MARGIN;
-    if(s.position.y>height+MARGIN) s.position.y = -MARGIN;
+function Car() {
+  //attribute
+  //decide tree vs chasesign1
+  var chance = random(10);
+
+
+  if (chance < 2) { //if its greater than 3 then it will be tree
+    // this.pos = createVector(random(100, 550), 235);
+    // this.velocity = createVector(random(-1, -2), random(1, 1));
+    //trees
+
+    this.object = 0; // it's a tree
+
+
+    if (random(2) > 1) {
+      this.pos = createVector(random(100, 550), 280);
+      this.velocity = createVector(random(-1, -1), random(1, 1));
+    } else {
+      this.pos = createVector(random(1000, 1600), 280); //spawn coordinates
+      this.velocity = createVector(random(1, 1), random(1, 1)); //affects angle
+
+    }
+
+
+  } else {
+    this.object = 1; //will be sign
+    if (random(2) > 1) {
+      this.pos = createVector(600, 335);
+      this.velocity = createVector(random(-1, -1), random(1, 1));
+    } else {
+      this.pos = createVector(1075, 335); //spawn coordinates
+      this.velocity = createVector(random(1, 1), random(1, 1)); //affects angle
+
+    }
+
   }
 
-  asteroids.overlap(bullets, asteroidHit);
+  if (chance > 3) {
+    this.object = 2; // it's the coin
+    this.pos = createVector(random(690, 900), 280);
+    this.velocity = createVector(-.5, 10);
 
-  ship.bounce(asteroids);
 
-  if(keyDown(LEFT_ARROW))
-    ship.rotation -= 4;
-  if(keyDown(RIGHT_ARROW))
-    ship.rotation += 4;
-  if(keyDown(UP_ARROW))
-  {
-    ship.addSpeed(0.2, ship.rotation);
-    ship.changeAnimation('thrust');
-  }
-  else
-    ship.changeAnimation('normal');
-
-  if(keyWentDown('x'))
-  {
-    var bullet = createSprite(ship.position.x, ship.position.y);
-    bullet.addImage(bulletImage);
-    bullet.setSpeed(10+ship.getSpeed(), ship.rotation);
-    bullet.life = 30;
-    bullets.add(bullet);
+    console.log("spawned an obstacle") ;
   }
 
-  drawSprites();
+
+
+  //   if (this.pos.x < 640) {
+  //
+  // } else {
+  //
+  //   this.velocity = createVector(random(1, 5), random(1, 5)) ;
+  // }
+
+
+
+  //methods
+  this.display = function() {
+
+    //
+    // fill(this.r, this.g, this.b) ;
+    // rect(this.pos.x, this.pos.y, 100, 100) ;
+    switch (this.object) {
+      case 0:
+        image(tree1, this.pos.x, this.pos.y, 150 * this.pos.y / 400, 275 * this.pos.y / 400);
+        break;
+
+      case 1:
+        image(sign1, this.pos.x, this.pos.y, 100 * this.pos.y / 450, 125 * this.pos.y / 450);
+        break;
+
+      case 2:
+        image(enemy, this.pos.x, this.pos.y, 100 * this.pos.y / 450, 100 * this.pos.y / 450);
+        break;
+    }
+
+    // pop() ;
+  }
+  // image(sign1, this.pos.x + 200, this.pos.y + 200, 100 , 125 );
+
+
+
+
+
+
+this.drive = function() {
+  this.pos.add(this.velocity);
+  // if (this.pos.x > width) this.pos.x = 0 ;
+  // if (this.pos.x < 0) this.pos.x = width ;
+  //if (this.pos.y > height) this.pos.y = 350;
 
 }
 
-function createAsteroid(type, x, y) {
-  var a = createSprite(x, y);
-  var img = loadImage('assets/asteroid'+floor(random(0, 3))+'.png');
-  a.addImage(img);
-  a.setSpeed(2.5-(type/2), random(360));
-  a.rotationSpeed = 0.5;
-  //a.debug = true;
-  a.type = type;
-
-  if(type == 2)
-    a.scale = 0.6;
-  if(type == 1)
-    a.scale = 0.3;
-
-  a.mass = 2+a.scale;
-  a.setCollider('circle', 0, 0, 50);
-  asteroids.add(a);
-  return a;
 }
 
-function asteroidHit(asteroid, bullet) {
-  var newType = asteroid.type-1;
 
-  if(newType>0) {
-    createAsteroid(newType, asteroid.position.x, asteroid.position.y);
-    createAsteroid(newType, asteroid.position.x, asteroid.position.y);
+function checkForKeys() {
+  if (keyIsDown(LEFT_ARROW)) carPos.x = carPos.x - 10; //velocity arrow value
+  if (keyIsDown(RIGHT_ARROW)) carPos.x = carPos.x + 10; //velocity arrow value
+
+
+  if ((keyIsDown(UP_ARROW)) && (carPos.y > 315)) {
+    carPos.y = carPos.y - 6 //velocity arrow value
   }
 
-  for(var i=0; i<10; i++) {
-    var p = createSprite(bullet.position.x, bullet.position.y);
-    p.addImage(particleImage);
-    p.setSpeed(random(3, 5), random(360));
-    p.friction = 0.95;
-    p.life = 15;
+  if ((keyIsDown(DOWN_ARROW)) && (carPos.y < height - 30)) {
+    carPos.y = carPos.y + 5; //velocity arrow value
+
   }
 
-  bullet.remove();
-  asteroid.remove();
+carPos.x = constrain(carPos.x, leftwall, rightwall) ;
+
+
+
+
 }
